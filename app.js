@@ -16,7 +16,31 @@ var budgetController = (function() {
         items: {
             income : [],
             expense : []
+        },
+        totals: {
+            income: 0,
+            expense: 0
         }
+    };
+
+    var budgetData = {
+        income: 0,
+        expense: 0,
+        savings: 0,
+        percentageSpent: 0
+    };
+
+    var budgetCalculate = function(type) {
+        budgetData[type] = data.totals[type];
+        //budgetData.expense = data.totals[expense];
+        budgetData.savings = budgetData.income - budgetData.expense;
+        if(budgetData.income === 0) {
+            budgetData.percentageSpent = '---';
+        } else {
+        budgetData.percentageSpent = Math.round((budgetData.expense/budgetData.income) * 100);
+        }
+        console.log(budgetData);
+        return budgetData;
     };
 
     return {
@@ -32,10 +56,13 @@ var budgetController = (function() {
             } else {
                 newItem = new Expense(description, value, id);
             }
-
+            data.totals[type] += newItem.value;
             data.items[type].push(newItem);
             console.log(data);
             return newItem;
+        },
+        budgetUpdate: function(type) {
+            return budgetCalculate(type);
         }
     };
 
@@ -101,6 +128,7 @@ var appController = (function(budgetCtrl, uiCtrl) {
         uiCtrl.listItem(newItem, userInput.type);
         console.log('Item added');
         uiCtrl.resetFields();
+        var budgetDetails = budgetCtrl.budgetUpdate(userInput.type);
     }
 
     var setupApp = function() {
