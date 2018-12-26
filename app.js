@@ -139,6 +139,7 @@ var appController = (function(budgetCtrl, uiCtrl) {
     var addItem = function() {
         var userInput = uiCtrl.inputData();
         console.log(userInput);
+        if(userInput.description !== '' && userInput.value !== 0 && !(isNaN(userInput.value))) {
         var newItem = budgetCtrl.newEntry(userInput.type, userInput.description, userInput.value);
         uiCtrl.listItem(newItem, userInput.type);
         console.log('Item added');
@@ -146,6 +147,7 @@ var appController = (function(budgetCtrl, uiCtrl) {
         budgetCtrl.budgetUpdate(userInput.type);
         var budgetDetails = budgetCtrl.budgetUpdatedValues();
         uiCtrl.setBudgetValues(budgetDetails);
+        }
     }
 
     var setupApp = function() {
