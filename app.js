@@ -1,5 +1,43 @@
 var budgetController = (function() {
 
+    var Expense = function(description, value, id) {
+        this.description = description;
+        this.value = value;
+        this.id = id;
+    }
+    
+    var Income = function(description, value, id) {
+        this.description = description;
+        this.value = value;
+        this.id = id;
+    }
+
+    var data = {
+        items: {
+            income : [],
+            expense : []
+        }
+    };
+
+    return {
+        newEntry: function(type, description, value) {
+            var id, newItem;
+            if(data.items[type].length > 0) {
+                id = data.items[type][data.items[type].length - 1].id + 1;
+            } else {
+                id = 0;
+            }
+            if(type === 'income') {
+                newItem = new Income(description, value, id);
+            } else {
+                newItem = new Expense(description, value, id);
+            }
+
+            data.items[type].push(newItem);
+            console.log(data);
+        }
+    };
+
 })();
 
 var uiController = (function() {
@@ -31,6 +69,7 @@ var appController = (function(budgetCtrl, uiCtrl) {
     var addItem = function() {
         var userInput = uiCtrl.inputData();
         console.log(userInput);
+        budgetCtrl.newEntry(userInput.type, userInput.description, userInput.value);
         console.log('Item added');
     }
 
