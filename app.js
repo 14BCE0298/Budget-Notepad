@@ -72,6 +72,15 @@ var uiController = (function() {
             
             document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
         },
+        resetFields: function() {
+            var feilds, feildsArray;
+            feilds = document.querySelectorAll(domString.inputDescription + ',' + domString.inputValue);
+            feildsArray = Array.prototype.slice.call(feilds);
+            feildsArray.forEach(function(current) {
+                current.value = '';
+            });
+            feildsArray[0].focus();
+        },
         inputData: function() {
             return {
                 type: document.querySelector(domString.inputType).value,
@@ -91,6 +100,7 @@ var appController = (function(budgetCtrl, uiCtrl) {
         var newItem = budgetCtrl.newEntry(userInput.type, userInput.description, userInput.value);
         uiCtrl.listItem(newItem, userInput.type);
         console.log('Item added');
+        uiCtrl.resetFields();
     }
 
     var setupApp = function() {
