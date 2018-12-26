@@ -35,6 +35,7 @@ var budgetController = (function() {
 
             data.items[type].push(newItem);
             console.log(data);
+            return newItem;
         }
     };
 
@@ -46,12 +47,30 @@ var uiController = (function() {
         inputType: '.add__type',
         inputDescription:'.add__description',
         inputValue:'.add__value',
+        incomeList:'.income__list',
+        expenseList:'.expenses__list',
         inputBtn:'.add__btn'
     };
 
     return {
         getDOMstrings: function() {
             return domString;
+        },
+        listItem :function(newItem, type) {
+            var html, newHtml, element;
+            if(type === 'income') {
+                element = domString.incomeList;
+                html = '<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">+ %value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+            } else {
+                element = domString.expenseList;
+                html = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">- %value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+            }
+            
+            newHtml = html.replace('%id%', newItem.id);
+            newHtml = newHtml.replace('%description%', newItem.description);
+            newHtml = newHtml.replace('%value%', newItem.value);
+            
+            document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
         },
         inputData: function() {
             return {
@@ -69,7 +88,8 @@ var appController = (function(budgetCtrl, uiCtrl) {
     var addItem = function() {
         var userInput = uiCtrl.inputData();
         console.log(userInput);
-        budgetCtrl.newEntry(userInput.type, userInput.description, userInput.value);
+        var newItem = budgetCtrl.newEntry(userInput.type, userInput.description, userInput.value);
+        uiCtrl.listItem(newItem, userInput.type);
         console.log('Item added');
     }
 
