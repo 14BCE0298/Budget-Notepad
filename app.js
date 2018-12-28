@@ -73,10 +73,13 @@ var budgetController = (function() {
             });
 
             indexObject = idArray.indexOf(id);
+            
+            data.totals[type] -= data.items[type][indexObject].value;
 
             if(indexObject !== -1) {
                 data.items[type].splice(indexObject, 1);
             }
+            budgetCalculate(type);
         }
     };
 
@@ -163,9 +166,7 @@ var appController = (function(budgetCtrl, uiCtrl) {
         uiCtrl.listItem(newItem, userInput.type);
         console.log('Item added');
         uiCtrl.resetFields();
-        budgetCtrl.budgetUpdate(userInput.type);
-        var budgetDetails = budgetCtrl.budgetUpdatedValues();
-        uiCtrl.setBudgetValues(budgetDetails);
+        settingTotals(userInput.type);
         }
     }
 
@@ -179,9 +180,15 @@ var appController = (function(budgetCtrl, uiCtrl) {
             console.log(id, type);
             budgetCtrl.deleteObject(type, id);
             uiCtrl.deleteEntry(itemId);
+            settingTotals(type);
         }
     }
 
+    var settingTotals = function(type) {
+        budgetCtrl.budgetUpdate(type);
+        var budgetDetails = budgetCtrl.budgetUpdatedValues();
+        uiCtrl.setBudgetValues(budgetDetails);
+    }
     var setupApp = function() {
         console.log('App has started');
         var domItems = uiCtrl.getDOMstrings();
