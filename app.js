@@ -105,7 +105,8 @@ var uiController = (function() {
         expenseTotal: '.budget__expenses--value',
         expensePercentage: '.budget__expenses--percentage',
         inputBtn:'.add__btn',
-        container:'.container'
+        container:'.container',
+        monthAndYear:'.budget__title--month'
     };
 
     return {
@@ -159,6 +160,12 @@ var uiController = (function() {
             var element;
             element = document.getElementById(selectorId);
             element.parentNode.removeChild(element);
+        },
+        setDate: function() {
+            var currentDate, months;
+            months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            currentDate = new Date;
+            document.querySelector(domString.monthAndYear).innerHTML = months[currentDate.getMonth()] + ',' + currentDate.getFullYear();
         }
     };
 
@@ -200,6 +207,7 @@ var appController = (function(budgetCtrl, uiCtrl) {
     var setupApp = function() {
         console.log('App has started');
         var domItems = uiCtrl.getDOMstrings();
+        uiCtrl.setDate();
         uiCtrl.setBudgetValues(budgetCtrl.budgetUpdatedValues());
         document.querySelector(domItems.inputBtn).addEventListener('click', addItem);
         document.addEventListener('keypress', function(event) {
