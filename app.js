@@ -143,6 +143,11 @@ var uiController = (function() {
             } else {
                 document.querySelector(domString.expensePercentage).innerHTML = obj.percentageSpent + '%'; 
             }
+        },
+        deleteEntry: function(selectorId) {
+            var element;
+            element = document.getElementById(selectorId);
+            element.parentNode.removeChild(element);
         }
     };
 
@@ -173,6 +178,7 @@ var appController = (function(budgetCtrl, uiCtrl) {
             id = parseInt(itemIdArray[1]);
             console.log(id, type);
             budgetCtrl.deleteObject(type, id);
+            uiCtrl.deleteEntry(itemId);
         }
     }
 
