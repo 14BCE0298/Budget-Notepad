@@ -4,6 +4,12 @@ var budgetController = (function() {
         this.description = description;
         this.value = value;
         this.id = id;
+        this,percentage = 0;
+    }
+    Expense.prototype.percentage = function(income) {
+        if(income !== 0){
+            this.percentage = Math.round(this.value/income * 100);
+        }
     }
     
     var Income = function(description, value, id) {
@@ -53,6 +59,7 @@ var budgetController = (function() {
                 newItem = new Income(description, value, id);
             } else {
                 newItem = new Expense(description, value, id);
+                newItem.percentage(budgetData.income);
             }
             data.totals[type] += newItem.value;
             data.items[type].push(newItem);
@@ -113,6 +120,7 @@ var uiController = (function() {
             } else {
                 element = domString.expenseList;
                 html = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">- %value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+                html = html.replace('21', newItem.percentage);
             }
             
             newHtml = html.replace('%id%', newItem.id);
