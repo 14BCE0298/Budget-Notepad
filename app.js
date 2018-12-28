@@ -64,6 +64,19 @@ var budgetController = (function() {
         },
         budgetUpdatedValues: function() {
             return budgetData;
+        },
+        deleteObject: function(type, id) {
+            var idArray, indexObject;
+
+            idArray = data.items[type].map(function(current) {
+                return current.id;
+            });
+
+            indexObject = idArray.indexOf(id);
+
+            if(indexObject !== -1) {
+                data.items[type].splice(indexObject, 1);
+            }
         }
     };
 
@@ -157,8 +170,9 @@ var appController = (function(budgetCtrl, uiCtrl) {
         if(itemId) {
             itemIdArray = itemId.split('-');
             type = itemIdArray[0];
-            id = itemIdArray[1];
+            id = parseInt(itemIdArray[1]);
             console.log(id, type);
+            budgetCtrl.deleteObject(type, id);
         }
     }
 
