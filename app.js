@@ -166,6 +166,21 @@ var uiController = (function() {
             months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             currentDate = new Date;
             document.querySelector(domString.monthAndYear).innerHTML = months[currentDate.getMonth()] + ',' + currentDate.getFullYear();
+        },
+        updateClass: function() {
+            var feildsArray, feilds;
+            feilds = document.querySelectorAll(
+                domString.inputType + ','
+                + domString.inputDescription + ','
+                + domString.inputValue
+            );
+            
+            feildsArray = Array.prototype.slice.call(feilds);
+            feildsArray.forEach(function(current) {
+                current.classList.toggle('red-focus');
+            });
+
+            document.querySelector(domString.inputBtn).classList.toggle('red');
         }
     };
 
@@ -217,6 +232,7 @@ var appController = (function(budgetCtrl, uiCtrl) {
         });
 
         document.querySelector(domItems.container).addEventListener('click', deleteEntry);
+        document.querySelector(domItems.inputType).addEventListener('change', uiCtrl.updateClass);
     }
 
     return {
