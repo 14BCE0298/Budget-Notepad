@@ -81,7 +81,8 @@ var uiController = (function() {
         incomeTotal: '.budget__income--value',
         expenseTotal: '.budget__expenses--value',
         expensePercentage: '.budget__expenses--percentage',
-        inputBtn:'.add__btn'
+        inputBtn:'.add__btn',
+        container:'.container'
     };
 
     return {
@@ -150,6 +151,17 @@ var appController = (function(budgetCtrl, uiCtrl) {
         }
     }
 
+    var deleteEntry = function(event) {
+        var itemIdArray, itemId, type, id;
+        itemId = event.target.parentNode.parentNode.parentNode.parentNode.id;
+        if(itemId) {
+            itemIdArray = itemId.split('-');
+            type = itemIdArray[0];
+            id = itemIdArray[1];
+            console.log(id, type);
+        }
+    }
+
     var setupApp = function() {
         console.log('App has started');
         var domItems = uiCtrl.getDOMstrings();
@@ -160,6 +172,8 @@ var appController = (function(budgetCtrl, uiCtrl) {
                 addItem();
             }
         });
+
+        document.querySelector(domItems.container).addEventListener('click', deleteEntry);
     }
 
     return {
